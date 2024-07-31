@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "BetterBerkeleytime",
+  "version": "1.0",
+  "permissions": [
+    "webNavigation"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://berkeleytime.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
