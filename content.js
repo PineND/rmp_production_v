@@ -1,7 +1,7 @@
 cache = []
 
 function handle_background_color(rating, numRatings) {
-  if (rating === undefined) {return '#D3D3D3'}
+  if (rating === undefined) {return '#DDDDDD'}
   if (numRatings === 0) {return '#B7B7B7'}
   if (rating < 1) {return '#FF7676'} 
   if (rating < 2) {return '#FF9B57'}
@@ -18,10 +18,15 @@ function handle_professor_info_display(result) {
   const background_color = handle_background_color(result_data.avgRating, result_data.numRatings)
   info_box.style.backgroundColor = background_color
 
-  const prof_name = document.createElement('span')
-  prof_name.textContent = result_name
-  prof_name.className = 'professor-name'
-  info_box.appendChild(prof_name)
+  // Create the initial display name with rating
+  let displayName = result_name
+  if (!result_data.error && result_data.avgRating !== undefined) {
+    const formattedRating = parseFloat(result_data.avgRating).toFixed(1)
+    displayName += `<br>Rating: ${formattedRating}`
+  }
+
+  // Use innerHTML for the professor name
+  info_box.innerHTML = `<div class="professor-name">${displayName}</div>`
 
   const expanded_details = document.createElement('div')
   expanded_details.className = 'professor-details'

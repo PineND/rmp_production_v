@@ -3,7 +3,8 @@
   padding: 2px 5px;
   margin: 2px 0;
   border-radius: 5px;
-  width: 100%;
+  min-width: 130px;
+  max-width: 100%;
   overflow: hidden;
   transition: all 0.4s ease;
   cursor: pointer;
@@ -15,7 +16,9 @@
 
 .professor-name {
   display: block;
-  width: 100%;
+  min-width: 130px;
+  max-width: 100%;
+  font-weight: bold;
 }
 
 .professor-details {
