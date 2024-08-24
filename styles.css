@@ -1,0 +1,35 @@
+.professor-info {
+  color: white;
+  padding: 2px 5px;
+  margin: 2px 0;
+  border-radius: 5px;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
+.professor-name {
+  display: block;
+  width: 100%;
+}
+
+.professor-details {
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+.professor-info:hover .professor-details {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.spacer {
+  height: 0.5em;
+}

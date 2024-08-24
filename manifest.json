@@ -5,12 +5,16 @@
   "permissions": [
     "webNavigation"
   ],
+  "host_permissions": [
+    "https://www.ratemyprofessors.com/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
       "matches": ["*://berkeleytime.com/*"],
+      "css": ["styles.css"],
       "js": ["content.js"]
     }
   ]
