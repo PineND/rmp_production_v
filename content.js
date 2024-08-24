@@ -18,15 +18,7 @@ function handle_professor_info_display(result) {
   const background_color = handle_background_color(result_data.avgRating, result_data.numRatings)
   info_box.style.backgroundColor = background_color
 
-  // Create the initial display name with rating
-  let displayName = result_name
-  if (!result_data.error && result_data.avgRating !== undefined) {
-    const formattedRating = parseFloat(result_data.avgRating).toFixed(1)
-    displayName += `<br>Rating: ${formattedRating}`
-  }
-
-  // Use innerHTML for the professor name
-  info_box.innerHTML = `<div class="professor-name">${displayName}</div>`
+  info_box.innerHTML = `<div class="professor-name">${result_name}</div>`
 
   const expanded_details = document.createElement('div')
   expanded_details.className = 'professor-details'
@@ -46,7 +38,6 @@ function handle_professor_info_display(result) {
     `
   }
   info_box.appendChild(expanded_details)
-
   info_box.addEventListener('click', (event) => {
     event.stopPropagation()
     if (result_data.legacyId === undefined) {
@@ -59,7 +50,6 @@ function handle_professor_info_display(result) {
       window.open(url, '_blank')
     }
   })
-
   return info_box
 }
 
