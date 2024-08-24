@@ -1,31 +1,31 @@
 cache = []
 
 function handle_background_color(rating, numRatings) {
-  if (rating === undefined) {return '#DDDDDD'}
-  if (numRatings === 0) {return '#B7B7B7'}
-  if (rating < 1) {return '#FF7676'} 
-  if (rating < 2) {return '#FF9B57'}
-  if (rating < 3) {return '#FFD366'}
-  if (rating < 4) {return '#C4DD68'}
-  return '#4FC688'
+  if (rating === undefined || numRatings === 0) {return '#DDDDDD'}
+  if (rating < 1.25) {return '#FF6969'} 
+  if (rating < 2.5) {return '#FFAB24'}
+  if (rating < 3.75) {return '#B4DD07'}
+  return '#00BA00'
 }
 
-function handle_professor_info_display(result) {
+function handle_instructor_info_display(result) {
   const result_name = result[0]
   const result_data = result[1]
   const info_box = document.createElement('div')
-  info_box.className = 'professor-info'
+  info_box.className = 'instructor-info'
   const background_color = handle_background_color(result_data.avgRating, result_data.numRatings)
   info_box.style.backgroundColor = background_color
 
-  info_box.innerHTML = `<div class="professor-name">${result_name}</div>`
+  info_box.innerHTML = `<div class="instructor-name">${result_name}</div>`
 
   const expanded_details = document.createElement('div')
-  expanded_details.className = 'professor-details'
+  expanded_details.className = 'instructor-details'
   expanded_details.style.backgroundColor = background_color
 
-  if (result_data.error) {
+  if (result_data.numRatings === 0) {
     expanded_details.textContent = 'No data available'
+  } else if (result_data.error) {
+    expanded_details.textContent = 'Instructor is not on RMP'
   } else {
     expanded_details.innerHTML = `
       <div class="spacer"></div>
@@ -75,15 +75,15 @@ function handle_raw_rmp_response(response_data, search_term) {
   const nodes = edges.map(edge => edge.node)
   const [lastName, firstInitial] = search_term.split(' ')
 
-  const matchingProfs = nodes.filter(
+  const matching_instructors = nodes.filter(
     node => {
       const lastNameMatch = node.lastName.toUpperCase() === lastName.toUpperCase()
       const firstInitialMatch = node.firstName[0].toUpperCase() === firstInitial.toUpperCase()
       return lastNameMatch && firstInitialMatch
     }
   )
-  if (matchingProfs.length > 0) {
-    const selected_match = matchingProfs[0]
+  if (matching_instructors.length > 0) {
+    const selected_match = matching_instructors[0]
     cache[search_term] = {
       firstName: selected_match.firstName,
       lastName: selected_match.lastName,
@@ -97,7 +97,7 @@ function handle_raw_rmp_response(response_data, search_term) {
     }
   }
   else {
-    cache[search_term] = {error: "No matching professors found"}
+    cache[search_term] = {error: "No matching instructors found"}
   }
   return handle_disgested_rmp_response(search_term)
 }
@@ -124,8 +124,8 @@ function fetch_rmp_data(search_term) {
 }
 
 // gets called for every name instance
-async function handle_name_text_string(prof_name) {
-    let names = prof_name.split(', ')
+async function handle_name_text_string(instructor_name) {
+    let names = instructor_name.split(', ')
     let results = await Promise.all(names.map(name => fetch_rmp_data(name)))
     return results
 }
@@ -145,8 +145,8 @@ async function table_modifier(table_body) {
             const result = await handle_name_text_string(nameText)
             nameCell.innerHTML = ''
             result.forEach((result) => {
-              const professorContent = handle_professor_info_display(result)
-              nameCell.appendChild(professorContent)
+              const instructor_content = handle_instructor_info_display(result)
+              nameCell.appendChild(instructor_content)
             })
             nameCell.setAttribute('data-rmp-modified', 'true')
           } catch (error) {
