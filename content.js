@@ -161,8 +161,6 @@ async function table_modifier(table_body) {
 function retryOperation(operation, retries, maxRetries, refresh_interval) {
   if (retries < maxRetries) {
     setTimeout(() => operation(retries + 1, maxRetries, refresh_interval), refresh_interval)
-  } else {
-    console.log(`Max retries reached`)
   }
 }
 
