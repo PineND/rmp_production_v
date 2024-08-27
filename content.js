@@ -2,9 +2,10 @@ cache = []
 
 function handle_background_color(rating, numRatings) {
   if (rating === undefined || numRatings === 0) {return '#DDDDDD'}
-  if (rating < 1.25) {return '#FF6969'} 
-  if (rating < 2.5) {return '#FFAB24'}
-  if (rating < 3.75) {return '#B4DD07'}
+  if (rating <= 1) {return '#E43939'}
+  if (rating <= 2) {return '#FD7224'}
+  if (rating <= 3) {return '#FFBC3D'}
+  if (rating <= 4) {return '#B2E545'}
   return '#00BA00'
 }
 
@@ -23,17 +24,30 @@ function handle_instructor_info_display(result) {
   expanded_details.style.backgroundColor = background_color
 
   if (result_data.numRatings === 0) {
-    expanded_details.textContent = 'No data available'
-  } else if (result_data.error) {
-    expanded_details.textContent = 'Instructor is not on RMP'
-  } else {
     expanded_details.innerHTML = `
       <div class="spacer"></div>
       ${result_data.department}
       <div class="spacer"></div>
-      Rating: ${result_data.avgRating}<br>
-      Difficulty: ${result_data.avgDifficulty}<br>
-      ${result_data.numRatings} ratings
+      No data available
+      <div class="spacer"></div>
+    `
+  } else if (result_data.error) {
+    expanded_details.textContent = 'Instructor is not on RMP'
+  } else {
+    const rating_text = result_data.numRatings === 1 ? 'rating' : 'ratings'
+    let wouldTakeAgainHtml = '';
+    if (result_data.takeAgain !== -1) {
+      const rounded_would_take_again = Math.round(result_data.takeAgain);
+      wouldTakeAgainHtml = `${rounded_would_take_again}% would take again<br>`;
+    }
+    expanded_details.innerHTML = `
+      <div class="spacer"></div>
+      ${result_data.department}<br>
+      ${result_data.numRatings} ${rating_text}
+      <div class="spacer"></div>
+      Rating: ${result_data.avgRating}/5<br>
+      Difficulty: ${result_data.avgDifficulty}/5<br>
+      ${wouldTakeAgainHtml}
       <div class="spacer"></div>
     `
   }
@@ -74,7 +88,6 @@ function handle_raw_rmp_response(response_data, search_term) {
   }
   const nodes = edges.map(edge => edge.node)
   const [lastName, firstInitial] = search_term.split(' ')
-
   const matching_instructors = nodes.filter(
     node => {
       const lastNameMatch = node.lastName.toUpperCase() === lastName.toUpperCase()
@@ -108,6 +121,7 @@ function fetch_rmp_data(search_term) {
     if (cache[search_term]) {
       resolve(handle_disgested_rmp_response(search_term));
     } else {
+      console.log('FETCHING', search_term)
       chrome.runtime.sendMessage(
         {action: "fetchRMP", name: search_term},
         function(response) {
