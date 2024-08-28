@@ -6,11 +6,11 @@ The extention can be found here: https://chromewebstore.google.com/detail/better
 Works as is.
     
 ## How It Works
-# RMP Data Fetching:
+### RMP Data Fetching:
 - The script constructs a GraphQL query to the RMP API.
 - It sends a POST request to the RMP GraphQL endpoint with appropriate headers (including authorization and cookies) & a payload containing the GraphQL query and variables (including the instructor's name)
 - The RMP server processes the request and sends back the response.
-# Performance Optimization:
+### Performance Optimization:
 The script uses caching to store fetched RMP data, reducing the number of API calls. It also implements retry & timeout logic for table modification in case the table is not immediately available.
 
 ## Chronic Issues
