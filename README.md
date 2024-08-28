@@ -1,6 +1,5 @@
 # RateMyProfessors extention for Berkeleytime
-This extension enhances the Berkeleytime course catalog by adding RateMyProfessors statistics directly to the catalog page.
-The extention can be found here: https://chromewebstore.google.com/detail/better-berkeleytime/declfjbohkamclnjbpjhcfpgmmceloam
+This extension enhances the Berkeleytime course catalog by adding RateMyProfessors statistics directly to the catalog page. [Chrome Web Store page.](https://chromewebstore.google.com/detail/better-berkeleytime/declfjbohkamclnjbpjhcfpgmmceloam)
 
 ## Set Up
 Works as is.
